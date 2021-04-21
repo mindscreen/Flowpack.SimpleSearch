@@ -479,7 +479,7 @@ class MysqlQueryBuilder implements QueryBuilderInterface
     protected function compare($propertyName, $propertyValue, $comparator): QueryBuilderInterface
     {
         if ($propertyValue instanceof \DateTime) {
-            $this->where[] = sprintf("datetime(`%s`) %s strftime('%s', '%s')", $propertyName, $comparator, '%Y-%m-%d %H:%M:%S', $propertyValue->format('Y-m-d H:i:s'));
+            $this->where[] = sprintf("`%s` %s STR_TO_DATE('%s', '%s')", $propertyName, $comparator, $propertyValue->format('Y-m-d H:i:s'), '%Y-%m-%d %H:%i:%S');
         } else {
             $parameterName = ':' . md5($propertyName . '#' . count($this->where));
             $this->parameterMap[$parameterName] = $propertyValue;
